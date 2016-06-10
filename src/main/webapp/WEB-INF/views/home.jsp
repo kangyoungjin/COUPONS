@@ -13,9 +13,9 @@
 <P>  The time on the server is ${serverTime}. </P>
 
 <h3>${ua }</h3>
-
+<div id="map" style="width:500px;height:400px;"></div>
 </body>
-<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=5d98df3cbf6c3a94417916c079e9b38c27b07ba3&libraries=services,clusterer""></script>
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=5d98df3cbf6c3a94417916c079e9b38c27b07ba3&libraries=services,clusterer"></script>
 <script>
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 var options = { //지도를 생성할 때 필요한 기본 옵션
