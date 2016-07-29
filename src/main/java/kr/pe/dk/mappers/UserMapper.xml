@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="kr.pe.dk.mappers.UserMapper">
+ 	<insert id="create">
+   	insert into TB_users 
+ 			(user_name, user_nick, user_password, user_addr, user_email, user_phone, user_desc, user_issys)
+ 	values  (#{user_name}, #{user_nick}, #{user_password}, #{user_addr}, #{user_email}, #{user_phone}, #{user_desc}, #{user_issys})
+ 	</insert>
+ 	
+ 	<select id="read" resultType="kr.pe.dk.vo.UserVO">
+ 	select user_seq, user_name, user_nick, user_password, user_addr, user_email, 
+		user_phone, user_desc, user_issys, user_x, user_y, user_intidate 
+		from TB_users where user_email = #{user_email}
+	</select>  
+	
+ 	<update id="update">
+ 	update TB_users SET user_name=#{user_name}, user_password = #{user_password}, user_phone=#{user_phone}, 
+ 		user_addr=#{user_addr}, user_x=#{user_x}, user_y =#{user_y},
+ 		user_desc=#{user_desc}, user_issys=#{user_issys} where user_email = #{user_email}
+ 	</update>
+ 	
+ 	<delete id="delete">
+ 	delete from TB_users where user_email = #{user_email}
+ 	</delete>
+ 	
+ 	<select id="list" parameterType="kr.pe.dk.vo.CriteriaVO" resultType="kr.pe.dk.vo.UserVO" >
+ 	select a.* from
+ 		(select t.* from
+ 			(select user_seq, user_name, user_nick, 
+ 			user_password, user_addr, user_email, user_phone, user_desc, user_x, user_y, user_intidate 
+ 			FROM `TB_users` 
+ 				<where>
+ 					<if test="type !=null">
+ 						<foreach collection="type" index="index" item="item" separator="OR">
+ 							<if test="item==&quot;user_name&quot;">user_name</if>
+ 							<if test="item==&quot;user_nick&quot;">user_nick</if>
+ 							<if test="item==&quot;user_phone&quot;">user_phone</if>
+ 							<if test="item==&quot;user_addr&quot;">user_addr</if>
+ 							like CONCAT('%',#{keyword},'%')
+ 						</foreach>
+ 					</if>
+ 				</where>
+ 			order by user_seq DESC ) t 
+ 		where t.user_seq <![CDATA[<=]]>(CEIL(#{page}/10))*100+1)  a
+ 	where a.user_seq between ((#{page}-1)*10)+1 and (#{page}*10)
+ 	</select>
+ 
+ </mapper> 
